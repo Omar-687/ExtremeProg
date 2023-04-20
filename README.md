@@ -1,1 +1,1 @@
-# Extremeprog
+# Repozitar projektu na predmet Extremne programovanie
