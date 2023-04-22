@@ -51,6 +51,7 @@ public class Database {
                             ps.print(book.title()
                                     + ";" + book.author()
                                     + ";" + book.publicationDate()
+                                    + ";" + book.borrowedDate()
                                     + "\n"));
         } catch (IOException e) {
             System.err.println("Failed to save to file ");
@@ -67,8 +68,9 @@ public class Database {
                 var title = attrs[0];
                 var author = attrs[1];
                 var published = Date.valueOf(attrs[2]);
+                var borrowed = Date.valueOf(attrs[3]);
 
-                this.insert(new Book(title, author, published));
+                this.insert(new Book(title, author, published, borrowed));
             });
         } catch (IOException e) {
             System.err.println("Failed to load from file " + path);

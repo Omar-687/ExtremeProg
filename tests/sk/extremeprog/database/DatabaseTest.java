@@ -8,11 +8,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class DatabaseTest {
-    private Book book1 = new Book("t1", "a1", Date.valueOf("2000-1-1"));
-    private Book book2 = new Book("t2", "a2", Date.valueOf("2000-1-1"));
-    private Book book3 = new Book("t3", "a3", Date.valueOf("2000-1-1"));
+    private Book book1 = new Book("t1", "a1", Date.valueOf("2000-1-1"), Date.valueOf("2007-8-11"));
+    private Book book2 = new Book("t2", "a2", Date.valueOf("2000-1-1"), Date.valueOf("2010-10-10"));
+    private Book book3 = new Book("t3", "a3", Date.valueOf("2000-1-1"), Date.valueOf(LocalDate.EPOCH));
     private Database database = Database.getInstance();
 
     @Before

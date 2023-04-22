@@ -11,9 +11,9 @@ public class Main {
 
         var d = Database.getInstance();
 
-        d.insert(new Book("t1", "a1", Date.valueOf(LocalDate.MIN)));
-        d.insert(new Book("t2", "a1", Date.valueOf(LocalDate.MIN)));
-        d.insert(new Book("t3", "a1", Date.valueOf(LocalDate.MIN)));
+        d.insert(new Book("t1", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
+        d.insert(new Book("t2", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
+        d.insert(new Book("t3", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
 
         d.save("data/d1.csv");
 
