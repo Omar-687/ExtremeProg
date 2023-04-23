@@ -10,7 +10,6 @@ public class Book{
     private String author;
     private Date publicationDate;
     private Date borrowedDate;
-
     public static Book nullObject = new Book(
             "untitled",
             "anonymous",

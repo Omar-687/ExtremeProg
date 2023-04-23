@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -81,6 +82,11 @@ public class Database {
         } catch (IOException e) {
             System.err.println("Failed to load from file " + path);
         }
+    }
+
+    public List<Book> getAllBooks(){
+        return new ArrayList<>(books.values());
+
     }
 
     public void reset() {
