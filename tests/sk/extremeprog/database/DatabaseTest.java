@@ -17,7 +17,7 @@ public class DatabaseTest {
     private Database database = Database.getInstance();
 
     @Before
-    public void emptyDatabase(){
+    public void emptyDatabase() {
         database.reset();
     }
 
@@ -25,16 +25,17 @@ public class DatabaseTest {
     public void consistentSaveLoad() {
         var path = "data/testDatabase.test";
 
-        database.insert(book1);
+        int id1 = database.insert(book1);
+        book1.setId(id1);
 
         database.save(path);
-        Assert.assertEquals(book1, database.findById(book1.hashCode()));
+        Assert.assertEquals(book1, database.findById(book1.getId()));
 
         database.reset();
-        Assert.assertEquals(Book.nullObject, database.findById(book1.hashCode()));
+        Assert.assertEquals(Book.nullObject, database.findById(book1.getId()));
 
         database.load(path);
-        Assert.assertEquals(book1, database.findById(book1.hashCode()));
+        Assert.assertEquals(book1, database.findById(book1.getId()));
 
         try {
             Files.delete(Path.of(path));
@@ -45,14 +46,20 @@ public class DatabaseTest {
 
     @Test
     public void insert() {
-        Assert.assertEquals(Book.nullObject, database.findById(book1.hashCode()));
-        Assert.assertEquals(Book.nullObject, database.findById(book2.hashCode()));
+        Assert.assertEquals(Book.nullObject, database.findById(1));
+        Assert.assertEquals(Book.nullObject, database.findById(2));
 
-        database.insert(book1);
-        Assert.assertEquals(book1, database.findById(book1.hashCode()));
+        int id1 = database.insert(book1);
+        book1.setId(id1);
+        Assert.assertEquals(book1, database.findById(book1.getId()));
 
-        database.insert(book2);
-        Assert.assertEquals(book2, database.findById(book2.hashCode()));
+        int id2 = database.insert(book2);
+        book2.setId(id2);
+        Assert.assertEquals(book2, database.findById(book2.getId()));
+
+        int id3 = database.insert(book3);
+        book3.setId(id3);
+        Assert.assertEquals(book3, database.findById(book3.getId()));
     }
 
 }

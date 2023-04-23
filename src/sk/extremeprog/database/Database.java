@@ -11,19 +11,24 @@ import java.util.stream.Stream;
 public class Database {
     private final HashMap<Integer, Book> books;
 
+    private int idCounter;
+
     private static final Database INSTANCE = new Database();
 
 
     private Database() {
         this.books = new HashMap<>();
+        idCounter = 1;
     }
 
     public static Database getInstance() {
         return INSTANCE;
     }
 
-    public void insert(Book book) {
-        books.put(book.hashCode(), book);
+    public int insert(Book book) {
+        books.put(idCounter, book);
+        idCounter++;
+        return idCounter - 1;
     }
 
     public Book findById(int id) {
@@ -32,13 +37,13 @@ public class Database {
 
     public List<Book> findByTitle(String title) {
         return books.values().stream()
-                .filter((b -> b.title().equals(title)))
+                .filter((b -> b.getTitle().equals(title)))
                 .toList();
     }
 
     public List<Book> findByAuthor(String author) {
         return books.values().stream()
-                .filter((b -> b.author().equals(author)))
+                .filter((b -> b.getAuthor().equals(author)))
                 .toList();
     }
 
@@ -48,10 +53,11 @@ public class Database {
         ) {
             books.values()
                     .forEach(book ->
-                            ps.print(book.title()
-                                    + ";" + book.author()
-                                    + ";" + book.publicationDate()
-                                    + ";" + book.borrowedDate()
+                            ps.print(book.getId()
+                                    + ";" + book.getTitle()
+                                    + ";" + book.getAuthor()
+                                    + ";" + book.getPublicationDate()
+                                    + ";" + book.getBorrowedDate()
                                     + "\n"));
         } catch (IOException e) {
             System.err.println("Failed to save to file ");
@@ -65,12 +71,12 @@ public class Database {
         try (Stream<String> fr = Files.lines(Path.of(path))) {
             fr.forEach(line -> {
                 var attrs = line.split(";");
-                var title = attrs[0];
-                var author = attrs[1];
-                var published = Date.valueOf(attrs[2]);
-                var borrowed = Date.valueOf(attrs[3]);
-
-                this.insert(new Book(title, author, published, borrowed));
+                var id = attrs[0];
+                var title = attrs[1];
+                var author = attrs[2];
+                var published = Date.valueOf(attrs[3]);
+                var borrowed = Date.valueOf(attrs[4]);
+                books.put(Integer.valueOf(id), new Book(Integer.valueOf(id), title, author, published, borrowed));
             });
         } catch (IOException e) {
             System.err.println("Failed to load from file " + path);
