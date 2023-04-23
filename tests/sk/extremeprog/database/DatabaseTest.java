@@ -11,9 +11,10 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 public class DatabaseTest {
-    private Book book1 = new Book("t1", "a1", Date.valueOf("2000-1-1"), Date.valueOf("2007-8-11"));
+    private Book book1 = new Book("t1", "a1", Date.valueOf("2000-1-1"));
     private Book book2 = new Book("t2", "a2", Date.valueOf("2000-1-1"), Date.valueOf("2010-10-10"));
     private Book book3 = new Book("t3", "a3", Date.valueOf("2000-1-1"), Date.valueOf(LocalDate.EPOCH));
+    private Book book4 = new Book("t4", "a4", Date.valueOf("2011-8-1"), Date.valueOf("2010-10-10"),"Jan Novak");
     private Database database = Database.getInstance();
 
     @Before
@@ -28,14 +29,20 @@ public class DatabaseTest {
         int id1 = database.insert(book1);
         book1.setId(id1);
 
+        int id2 = database.insert(book4);
+        book4.setId(id2);
+
         database.save(path);
         Assert.assertEquals(book1, database.findById(book1.getId()));
+        Assert.assertEquals(book4, database.findById(book4.getId()));
 
         database.reset();
         Assert.assertEquals(Book.nullObject, database.findById(book1.getId()));
+        Assert.assertEquals(Book.nullObject, database.findById(book4.getId()));
 
         database.load(path);
         Assert.assertEquals(book1, database.findById(book1.getId()));
+        Assert.assertEquals(book4, database.findById(book4.getId()));
 
         try {
             Files.delete(Path.of(path));
@@ -60,6 +67,10 @@ public class DatabaseTest {
         int id3 = database.insert(book3);
         book3.setId(id3);
         Assert.assertEquals(book3, database.findById(book3.getId()));
+
+        int id4 = database.insert(book4);
+        book4.setId(id4);
+        Assert.assertEquals(book4, database.findById(book4.getId()));
     }
 
 }

@@ -13,6 +13,9 @@ public class BorrowingDateController {
     public List<Book> getBooksToBeReturned(List<Book> books) {
         List<Book> booksToBeReturned = new ArrayList<>();
         for (Book book : books) {
+            if (book.getBorrowedDate() == null){
+                continue;
+            }
             if (book.getBorrowedDate().getTime() + (DAYS_TO_RETURN_BOOK * CONVERSION_RATE_FROM_MILLISECONDS_TO_DAY) <= System.currentTimeMillis()) {
                 booksToBeReturned.add(book);
             }

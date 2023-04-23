@@ -4,33 +4,43 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Book{
+public class Book {
     private Integer id;
     private String title;
     private String author;
     private Date publicationDate;
     private Date borrowedDate;
+    private String borrower;
     public static Book nullObject = new Book(
             "untitled",
             "anonymous",
-            Date.valueOf(LocalDate.EPOCH),
             Date.valueOf(LocalDate.EPOCH));
 
-    public Book(String title, String author, Date publicationDate, Date borrowedDate) {
-        this.id = null;
-        this.title = title;
-        this.author = author;
-        this.publicationDate = publicationDate;
-        this.borrowedDate = borrowedDate;
+    public Book(String title, String author, Date publicationDate) {
+        this(null, title, author, publicationDate, Date.valueOf(LocalDate.EPOCH), null);
     }
 
-    public Book(Integer id, String title, String author, Date publicationDate, Date borrowedDate) {
+    public Book(String title, String author, Date publicationDate, Date borrowedDate) {
+        this(null, title, author, publicationDate, borrowedDate, null);
+    }
+
+    public Book(Integer bookID, String title, String author, Date published, Date borrowed) {
+        this(bookID, title, author, published, borrowed, null);
+    }
+
+    public Book(String title, String author, Date publicationDate, Date borrowedDate, String borrower) {
+        this(null, title, author, publicationDate, borrowedDate, borrower);
+    }
+
+    public Book(Integer id, String title, String author, Date publicationDate, Date borrowedDate, String borrower) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publicationDate = publicationDate;
         this.borrowedDate = borrowedDate;
+        this.borrower = borrower;
     }
+
 
     public Integer getId() {
         return id;
@@ -72,21 +82,31 @@ public class Book{
         this.borrowedDate = borrowedDate;
     }
 
+    public String getBorrower() {
+        return borrower;
+    }
+
+    public void setBorrower(String user) {
+        this.borrower = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(publicationDate, book.publicationDate) && Objects.equals(borrowedDate, book.borrowedDate);
+        return Objects.equals(id, book.id) && Objects.equals(title, book.title)
+                && Objects.equals(author, book.author) && Objects.equals(publicationDate, book.publicationDate)
+                && Objects.equals(borrowedDate, book.borrowedDate) && Objects.equals(borrower, book.getBorrower());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, publicationDate, borrowedDate);
+        return Objects.hash(id, title, author, publicationDate, borrowedDate, borrower);
     }
 
     @Override
     public String toString() {
-        return title + " by " + author + " at " + publicationDate + " borrowed " + borrowedDate;
+        return "ID: " + id + " book " + title + " by " + author + " at " + publicationDate + " borrowed " + borrowedDate + " by " + borrower;
     }
 }

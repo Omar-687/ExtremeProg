@@ -32,6 +32,10 @@ public class Database {
         return idCounter - 1;
     }
 
+    public void modify(Book book) {
+        books.put(book.getId(), book);
+    }
+
     public Book findById(int id) {
         return books.getOrDefault(id, Book.nullObject);
     }
@@ -59,6 +63,7 @@ public class Database {
                                     + ";" + book.getAuthor()
                                     + ";" + book.getPublicationDate()
                                     + ";" + book.getBorrowedDate()
+                                    + ";" + book.getBorrower()
                                     + "\n"));
         } catch (IOException e) {
             System.err.println("Failed to save to file ");
@@ -76,8 +81,9 @@ public class Database {
                 var title = attrs[1];
                 var author = attrs[2];
                 var published = Date.valueOf(attrs[3]);
-                var borrowed = Date.valueOf(attrs[4]);
-                books.put(Integer.valueOf(id), new Book(Integer.valueOf(id), title, author, published, borrowed));
+                var borrowed = attrs[4].equals("null") ? null : Date.valueOf(attrs[4]);
+                var borrower = attrs[5].equals("null") ? null : attrs[5];
+                books.put(Integer.valueOf(id), new Book(Integer.valueOf(id), title, author, published, borrowed, borrower));
             });
         } catch (IOException e) {
             System.err.println("Failed to load from file " + path);
