@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.sql.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BookTest {
     @Test
@@ -32,12 +31,12 @@ public class BookTest {
         var borrowedDate = Date.valueOf("2005-5-18");
         var borrower = "Jozef Mrkva";
         var book = new Book(title, author, publicationDate, borrowedDate, borrower);
-        assertThrows(IllegalArgumentException.class,()->book.setId(-1));
-        assertThrows(IllegalArgumentException.class,()->book.setId(0));
-        assertThrows(IllegalArgumentException.class,()->book.setId(null));
-        assertThrows(IllegalArgumentException.class,()->book.setAuthor(null));
-        assertThrows(IllegalArgumentException.class,()->book.setAuthor(""));
-        assertThrows(IllegalArgumentException.class,()->book.setBorrower(""));
+        Assert.assertThrows(IllegalArgumentException.class,()->book.setId(-1));
+        Assert.assertThrows(IllegalArgumentException.class,()->book.setId(0));
+        Assert.assertThrows(IllegalArgumentException.class,()->book.setId(null));
+        Assert.assertThrows(IllegalArgumentException.class,()->book.setAuthor(null));
+        Assert.assertThrows(IllegalArgumentException.class,()->book.setAuthor(""));
+        Assert.assertThrows(IllegalArgumentException.class,()->book.setBorrower(""));
 
 
 

@@ -19,7 +19,6 @@ public class DatabaseTest {
     private Book book5 = new Book("t2", "a1", Date.valueOf("2001-1-1"));
 
     private Database database = Database.getInstance();
-//    private ArrayList<Book>
 
     int sucessfulRemovalOfBook = 1;
     int unSuccessfulRemovalOfBook = 0;
