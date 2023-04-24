@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
+import java.util.Objects;
 public class Database {
     private final HashMap<Integer, Book> books;
 
@@ -26,11 +27,20 @@ public class Database {
         return INSTANCE;
     }
 
-    public int insert(Book book) {
+    public int insertBook(Book book) {
         books.put(idCounter, book);
+        book.setId(idCounter);
         idCounter++;
         return idCounter - 1;
     }
+    public int removeBook(int bookNum){
+        if (books.containsKey(bookNum)) {
+            books.remove(bookNum);
+            return 1; // book was deleted
+        }
+        return 0; // book was not deleted
+        }
+
 
     public void modify(Book book) {
         books.put(book.getId(), book);
@@ -42,15 +52,35 @@ public class Database {
 
     public List<Book> findByTitle(String title) {
         return books.values().stream()
-                .filter((b -> b.getTitle().equals(title)))
+                .filter(book -> Objects.equals(book.getTitle(), title))
                 .toList();
     }
 
     public List<Book> findByAuthor(String author) {
         return books.values().stream()
-                .filter((b -> b.getAuthor().equals(author)))
+                .filter(book -> Objects.equals(book.getAuthor(), author))
                 .toList();
     }
+    public List<Book> findByPublicationDate(Date publicationDate) {
+        return books.values().stream()
+                .filter(book -> Objects.equals(book.getPublicationDate(), publicationDate))
+                .toList();
+    }
+
+    public List<Book> findByBorrowedDate(Date borrowedDate) {
+        return books.values().stream()
+                .filter(book -> Objects.equals(book.getBorrowedDate(), borrowedDate))
+                .toList();
+    }
+    public List<Book> findByBorrower(String borrower) {
+            return books.values().stream()
+                    .filter(book -> Objects.equals(book.getBorrower(), borrower))
+                    .toList();
+
+    }
+
+
+
 
     public void save(String path) {
         try (FileOutputStream fw = new FileOutputStream(path);

@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 public final class Borrowing {
-    private static final Database d = Database.getInstance();
+    private static final Database database = Database.getInstance();
 
     public static Book borrowBook(Book book, String user){
         return borrowBook(book, user, Date.valueOf(LocalDate.now()));
@@ -24,10 +24,10 @@ public final class Borrowing {
     }
 
     public static Book borrowBook(int bookID, String user, Date date){
-        Book book = d.findById(bookID);
+        Book book = database.findById(bookID);
         book.setBorrower(user);
         book.setBorrowedDate(date);
-        d.modify(book);
+        database.modify(book);
         return book;
     }
 }
