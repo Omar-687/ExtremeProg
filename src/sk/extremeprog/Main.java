@@ -9,15 +9,16 @@ import java.time.LocalDate;
 public class Main {
     public static void main(String[] args) {
 
-        var d = Database.getInstance();
+        var database = Database.getInstance();
 
-        d.insert(new Book("t1", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
-        d.insert(new Book("t2", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
-        d.insert(new Book("t3", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
+        database.insertBook(new Book("t1", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
+        database.insertBook(new Book("t2", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
+        database.insertBook(new Book("t3", "a1", Date.valueOf(LocalDate.MIN), Date.valueOf(LocalDate.EPOCH)));
 
-        d.save("data/d1.csv");
+        database.removeBook(2);
+        database.save("data/d1.csv");
 
-        System.out.println(d.findByAuthor("a1"));
+        System.out.println(database.findByAuthor("a1"));
 
     }
 }

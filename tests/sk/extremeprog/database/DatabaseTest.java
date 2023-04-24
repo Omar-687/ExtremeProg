@@ -15,7 +15,13 @@ public class DatabaseTest {
     private Book book2 = new Book("t2", "a2", Date.valueOf("2000-1-1"), Date.valueOf("2010-10-10"));
     private Book book3 = new Book("t3", "a3", Date.valueOf("2000-1-1"), Date.valueOf(LocalDate.EPOCH));
     private Book book4 = new Book("t4", "a4", Date.valueOf("2011-8-1"), Date.valueOf("2010-10-10"),"Jan Novak");
+
+    private Book book5 = new Book("t2", "a1", Date.valueOf("2001-1-1"));
+
     private Database database = Database.getInstance();
+
+    int sucessfulRemovalOfBook = 1;
+    int unSuccessfulRemovalOfBook = 0;
 
     @Before
     public void emptyDatabase() {
@@ -26,11 +32,8 @@ public class DatabaseTest {
     public void consistentSaveLoad() {
         var path = "data/testDatabase.test";
 
-        int id1 = database.insert(book1);
-        book1.setId(id1);
-
-        int id2 = database.insert(book4);
-        book4.setId(id2);
+        database.insertBook(book1);
+        database.insertBook(book4);
 
         database.save(path);
         Assert.assertEquals(book1, database.findById(book1.getId()));
@@ -52,25 +55,55 @@ public class DatabaseTest {
     }
 
     @Test
-    public void insert() {
+    public void insertBooks() {
         Assert.assertEquals(Book.nullObject, database.findById(1));
         Assert.assertEquals(Book.nullObject, database.findById(2));
 
-        int id1 = database.insert(book1);
-        book1.setId(id1);
+        database.insertBook(book1);
         Assert.assertEquals(book1, database.findById(book1.getId()));
 
-        int id2 = database.insert(book2);
-        book2.setId(id2);
+        database.insertBook(book2);
         Assert.assertEquals(book2, database.findById(book2.getId()));
 
-        int id3 = database.insert(book3);
-        book3.setId(id3);
+        database.insertBook(book3);
         Assert.assertEquals(book3, database.findById(book3.getId()));
 
-        int id4 = database.insert(book4);
-        book4.setId(id4);
+        database.insertBook(book4);
         Assert.assertEquals(book4, database.findById(book4.getId()));
     }
+    @Test
+    public void insertAndDeleteBooks() {
+        Assert.assertEquals(Book.nullObject, database.findById(-1));
+        int id1 = database.insertBook(book1);
+        Assert.assertEquals(book1, database.findById(book1.getId()));
+        Assert.assertEquals(database.removeBook(id1), sucessfulRemovalOfBook);
+
+        Assert.assertEquals(Book.nullObject, database.findById(id1));
+        Assert.assertEquals(database.removeBook(id1), unSuccessfulRemovalOfBook);
+        Assert.assertEquals(database.removeBook(-1), unSuccessfulRemovalOfBook);
+
+        id1 = database.insertBook(book1);
+        int id2 = database.insertBook(book2);
+        int id3 = database.insertBook(book3);
+        int id4 = database.insertBook(book4);
+        Assert.assertEquals(4, database.getAllBooks().size());
+        Assert.assertEquals(3, database.findByPublicationDate(Date.valueOf("2000-1-1")).size());
+        int id5 = database.insertBook(book5);
+        Assert.assertEquals(2, database.findByAuthor("a1").size());
+        Assert.assertEquals(2, database.findByTitle("t2").size());
+        Assert.assertEquals(5, database.getAllBooks().size());
+        Assert.assertEquals(sucessfulRemovalOfBook, database.removeBook(id4));
+        Assert.assertEquals(sucessfulRemovalOfBook, database.removeBook(id5));
+        Assert.assertEquals(unSuccessfulRemovalOfBook, database.removeBook(id5));
+        Assert.assertEquals(3, database.getAllBooks().size());
+        Assert.assertEquals(0, database.findByPublicationDate(Date.valueOf("1990-1-1")).size());
+        Assert.assertEquals(0, database.findByBorrower("").size());
+        Assert.assertEquals(0, database.findByPublicationDate(Date.valueOf("1990-1-1")).size());
+
+
+
+
+    }
+
 
 }

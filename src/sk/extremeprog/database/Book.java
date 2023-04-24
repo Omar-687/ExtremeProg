@@ -1,5 +1,7 @@
 package sk.extremeprog.database;
 
+import com.sun.jdi.connect.IllegalConnectorArgumentsException;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -47,6 +49,12 @@ public class Book {
     }
 
     public void setId(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID must be a positive integer");
+        }
         this.id = id;
     }
 
@@ -55,6 +63,9 @@ public class Book {
     }
 
     public void setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
         this.title = title;
     }
 
@@ -63,6 +74,9 @@ public class Book {
     }
 
     public void setAuthor(String author) {
+        if (author == null || author.isEmpty()){
+            throw new IllegalArgumentException("Author cannot be null or empty");
+        }
         this.author = author;
     }
 
@@ -86,8 +100,11 @@ public class Book {
         return borrower;
     }
 
-    public void setBorrower(String user) {
-        this.borrower = user;
+    public void setBorrower(String borrower) {
+        if (borrower.isEmpty()){
+            throw new IllegalArgumentException("Borrower cannot be empty");
+        }
+        this.borrower = borrower;
     }
 
     @Override
