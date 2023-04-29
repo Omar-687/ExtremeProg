@@ -101,9 +101,6 @@ public class Book {
     }
 
     public void setBorrower(String borrower) {
-        if (borrower.isEmpty()){
-            throw new IllegalArgumentException("Borrower cannot be empty");
-        }
         this.borrower = borrower;
     }
 
