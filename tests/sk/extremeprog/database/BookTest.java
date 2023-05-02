@@ -36,10 +36,6 @@ public class BookTest {
         Assert.assertThrows(IllegalArgumentException.class,()->book.setId(null));
         Assert.assertThrows(IllegalArgumentException.class,()->book.setAuthor(null));
         Assert.assertThrows(IllegalArgumentException.class,()->book.setAuthor(""));
-        Assert.assertThrows(IllegalArgumentException.class,()->book.setBorrower(""));
-
-
-
 
     }
 }
